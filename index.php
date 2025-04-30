@@ -10,6 +10,7 @@ $lista_arquivo = $arquivosModel->listar();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload de arquivos</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>Envio de arquivos</h1>
@@ -20,13 +21,14 @@ $lista_arquivo = $arquivosModel->listar();
         <button type="submit">Enviar</button>
     </form>
 
-    <?php foreach ($lista_arquivo as $arquivo) {?>
-        <div>
-            <?= $arquivo['nome']?>
-            <?php "<img src=" . $arquivo['caminho'] . "alt='\$arquivo['nome']'\>" ?>
-            <a href="<?= $arquivo['nome']?>"></a>
-        </div>
-    <?php }?>
+    <div class="card-wrapper">
+        <?php foreach ($lista_arquivo as $arquivo) {?>
+            <div class="card">
+                <?= '<img class="img" src="' . $arquivo['caminho'] . '"alt="' . $arquivo['nome'] . '"\>' ?>
+                <?= '<a href="">' . $arquivo['nome_original'] . '</a>' ?>
+            </div>
+        <?php }?>
+    </div>
 
 </body>
 </html>
