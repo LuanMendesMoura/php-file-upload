@@ -1,3 +1,9 @@
+<?php require_once "./app/model/ArquivosModel.php";
+
+$arquivosModel = new ArquivosModel();
+$lista_arquivo = $arquivosModel->listar();
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -13,5 +19,14 @@
 
         <button type="submit">Enviar</button>
     </form>
+
+    <?php foreach ($lista_arquivo as $arquivo) {?>
+        <div>
+            <?= $arquivo['nome']?>
+            <?php "<img src=" . $arquivo['caminho'] . "alt='\$arquivo['nome']'\>" ?>
+            <a href="<?= $arquivo['nome']?>"></a>
+        </div>
+    <?php }?>
+
 </body>
 </html>

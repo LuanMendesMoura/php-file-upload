@@ -1,18 +1,59 @@
-<?php 
+<?php
+require_once "./app/model/ArquivosModel.php";
 
+// Superglobals 
+// $_GET, $_POST, $_FILES, $_SERVER
+
+// validar o tipo de requisição
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    return header('Location: index.php');
+}
+
+// validar o conteudo do formulario
+if (!isset($_FILES['imagem'])) {
+    return header('Location: index.php');
+}
+
+$imagem = $_FILES["imagem"];
 $diretorioDestino = "upload/";
 
-$imagem = $_FILES['imagem'];
+// validar o tipo e extensão de arquivo
+$tiposPermitidos = ['image/jpeg', 'image/png', 'image/webp'];
+$extensoesPermitidas = ['jpeg', 'jpg', 'png', 'webp'];
+
+if (!in_array($imagem['type'], $tiposPermitidos)) {
+    die('Tipo de arquivo inválido!');
+}
+
+$arquivoExtensao = strtolower(pathinfo($imagem['name'], PATHINFO_EXTENSION));
+if (!in_array($arquivoExtensao, $extensoesPermitidas)) {
+    die('Extensão do arquivo inválida!');
+}
 
 $caminhoTemporario = $imagem["tmp_name"];
-$caminhoDestino = $diretorioDestino . $imagem["name"];
 
-var_dump($_FILES);
+// Tratamento para nome de arquivo unico
+$nomeUnico = uniqid() . '_' . $imagem["name"];
+$caminhoDestino = $diretorioDestino . $nomeUnico;
 
 $salvou = move_uploaded_file($caminhoTemporario, $caminhoDestino);
 
-if ($salvou) {
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+
+    $arquivosModel = new ArquivosModel();
+
+     if (empty($_POST['id'])){
+
+        $sucesso = $arquivosModel->criar([
+            'nome' => $nomeUnico,
+            'nome_original' => $imagem["name"],
+            'caminho' => $caminhoDestino
+        ]);
+    }
+}
+if ($salvou and $sucesso) {
     echo "Arquivo salvo em $caminhoDestino";
+    echo "<br><a href='index.php'>Voltar</a>";
 } else {
-    echo "Erro ao salvar!";
+    echo "Erro ao salvar arquivo";
 }
