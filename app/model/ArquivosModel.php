@@ -15,15 +15,19 @@ class ArquivosModel {
     public function criar($imagem) {
         $query = "INSERT INTO $this->tabela (nome, nome_original, caminho) VALUES (:nome, :nome_original, :caminho)";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':nome',$imagem['nome']);
-        $stmt->bindParam(':nome_original',$imagem['nome_original']);
-        $stmt->bindParam(':caminho',$imagem['caminho']);
+        // $stmt->bindParam(':nome',$imagem['nome']);
+        // $stmt->bindParam(':nome_original',$imagem['nome_original']);
+        // $stmt->bindParam(':caminho',$imagem['caminho']);
 
-        return $stmt->execute();
+        return $stmt->execute([
+            ':nome' => $imagem['nome'],
+            ':nome_original' => $imagem['nome_original'],
+            ':caminho'=> $imagem['caminho']
+        ]);
     }
 
     public function listar() {
-        $query = "SELECT * FROM $this->tabela";
+        $query = "SELECT * FROM $this->tabela ORDER BY data_envio DESC";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
 

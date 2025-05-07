@@ -30,12 +30,24 @@ if (!in_array($arquivoExtensao, $extensoesPermitidas)) {
     die('Extensão do arquivo inválida!');
 }
 
-$caminhoTemporario = $imagem["tmp_name"];
+
+// Validação tamanho da imagem 16MB - 16.777.216
+$tamanhoMaximoDoArquivoEmBytes = 16 * 1024 * 1024; 
+
+if ($imagem["size"] > $tamanhoMaximoDoArquivoEmBytes) {
+    die("Arquivo Muito Grande! ");
+} 
+
+// Criar o diretorio upload caso não haja
+if (!is_dir($diretorioDestino)) {
+    mkdir($diretorioDestino);
+}
 
 // Tratamento para nome de arquivo unico
 $nomeUnico = uniqid() . '_' . $imagem["name"];
 $caminhoDestino = $diretorioDestino . $nomeUnico;
 
+$caminhoTemporario = $imagem["tmp_name"];
 $salvou = move_uploaded_file($caminhoTemporario, $caminhoDestino);
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){

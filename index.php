@@ -24,8 +24,11 @@ $lista_arquivo = $arquivosModel->listar();
     <div class="card-wrapper">
         <?php foreach ($lista_arquivo as $arquivo) {?>
             <div class="card">
-                <?= '<img class="img" src="' . $arquivo['caminho'] . '"alt="' . $arquivo['nome'] . '"\>' ?>
-                <?= '<a href="">' . $arquivo['nome_original'] . '</a>' ?>
+                <!-- <?= '<img class="img" src="' . $arquivo['caminho'] . '"alt="' . $arquivo['nome'] . '"\>' ?> -->
+                <img class="img" src="<?=  $arquivo['caminho'] ?>" alt="<?= $arquivo['nome'] ?>"\>
+
+                <!-- <?= '<a href="' . $arquivo['caminho'] . '" download>' . $arquivo['nome_original'] . '</a>' ?> -->
+                <a href="<?= $arquivo['caminho'] ?>" download><?= $arquivo['nome_original'] ?></a>
             </div>
         <?php }?>
     </div>
